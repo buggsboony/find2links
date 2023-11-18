@@ -8,6 +8,10 @@ import core.stdc.stdlib; //2023-11-18 12:18:39 - exit(0);
 
 const APP_NAME = "Find2Links";
 
+/*
+ find /usr/share/hydrogen -iname "*kick*"
+*/
+
 int[string] OCCURRENCES; //Memory
 
 int tryCreateLink(string filename,string destfilename)
@@ -55,38 +59,75 @@ int tryCreateLink(string filename,string destfilename)
 }//tryCreateLink
 
 
+string sourceFile="";
+string destination="";
+
+void job()
+{
+        //File f = File(sourceFile,"r");     
+        string content = std.file.readText(sourceFile); //2023-11-18 18:59:45 - ReadToEnd
+        string [] lines = content.split("\n");
+        //writeln(lines);      
+        foreach( line ; lines )
+        {
+            writeln("line=",std.string.strip(line));
+            string trimmed = std.string.strip(line);
+            if( trimmed.length  )
+             {                
+                string filename = line;
+                string basename = std.path.baseName(line);
+                string destfilename =  destination~"/"~basename;
+                writeln("symlink("~filename~","~destfilename~"); ");
+                //writeln("File Size: ", std.file.getSize(filename)  );
+                int res = tryCreateLink(filename, destfilename);                
+                writeln("TryCreateLink = ", res);
+             }//trimmed line exists
+        }
+}//job
+
+
 
 void main(string [] args)
 {
 
     writeln(APP_NAME);
 
-    string destination = "./dest";
+    if( args.length <=1)
+    {
 
-    string command = "find /usr/share/hydrogen -iname \"*kick*\" ";
-    writeln("command is = ",command);
-    auto ls = executeShell(command);
-    if (ls.status != 0) 
+        writeln("Source file ?");
+        sourceFile = strip(readln());
+    }else
     {
-        writeln("Failed to retrieve file listing");    
+        sourceFile = args[1];        
     }
-    else
+    writeln("Source file is ", "'"~sourceFile~"'");
+
+    writeln("Destination ?");
+    destination = strip(readln());
+    if( destination.length<=0) 
     {
-        string [] lines = ls.output.split("\n");
-        foreach( line ; lines )
-        {
-            //writeln("line=",std.string.strip(line));
-            string trimmed = std.string.strip(line);
-            if( trimmed.length  )
-            {                
-                string filename = line;
-                string basename = baseName(line);
-                string destfilename =  destination~"/"~basename;
-                writeln("symlink("~filename~","~destfilename~"); ");
-                //writeln("File Size: ", std.file.getSize(filename)  );
-                int res = tryCreateLink(filename, destfilename);                
-                writeln("TryCreateLink = ", res);
-            }//trimmed line exists
-        }
-    }    
+        writeln("Destination required");
+        exit(0);
+    }
+    //destination does not exists :     
+    if( !(exists(destination) && isDir(destination)) ) //2023-11-18 19:27:15 - Check path existence
+    {
+        writeln("Create destination path");
+        mkdir(destination);  
+    }
+
+   // string command = "find /usr/share/hydrogen -iname \"*kick*\" ";
+   // writeln("command is = ",command);
+    //auto ls = executeShell(command);
+    // if (ls.status != 0) 
+    // {
+    //     writeln("Failed to retrieve file listing");    
+    // }
+    // else
+    // {
+    //      string [] lines = ls.output.split("\n");
+    // }   
+
+    job();
 }//main

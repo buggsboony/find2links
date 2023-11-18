@@ -1,0 +1,8 @@
+/usr/share/hydrogen/data/drumkits/GMRockKit/Kick-Hard.wav
+/usr/share/hydrogen/data/drumkits/GMRockKit/Kick-Hardest.wav
+/usr/share/hydrogen/data/drumkits/GMRockKit/Kick-Med.wav
+/usr/share/hydrogen/data/drumkits/GMRockKit/Kick-Soft.wav
+/usr/share/hydrogen/data/drumkits/GMRockKit/Kick-Softest.wav
+/usr/share/hydrogen/data/drumkits/TR808EmulationKit/808_Kick_Long.flac
+/usr/share/hydrogen/data/drumkits/TR808EmulationKit/808_Kick_Short.flac
+/usr/share/hydrogen/data/Kick-Med.wav

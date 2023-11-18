@@ -5,9 +5,6 @@ what=${PWD##*/}
 extension=
 #peut être extension vide
 
-echo "wmctrl utility is needed.."
-sudo pacman -S wmctrl 
-
 echo "Set executable..."
 chmod +x $what$extension
 #echo "lien symbolique vers usr bin"

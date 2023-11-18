@@ -4,12 +4,27 @@
     "version": "2.0.0",
     "tasks": [
         {
-            "label": "build",
+            "label": "run",
             "type": "shell",
             "command": "dmd",
             "args": [
                 "-run"
                 ,"${file}"
+                ,"/home/boony/Documents/srcs/find2links/findkicks.txt"
+            ],
+            "group": "build",
+            "presentation": {
+                // Reveal the output only if unrecognized errors occur.
+                "reveal": "silent"
+            },
+            // Use the standard MS compiler pattern to detect errors, warnings and infos
+            "problemMatcher": "$msCompile"
+        }, {
+            "label": "build",
+            "type": "shell",
+            "command": "dmd",
+            "args": [                 
+                "${file}"
             ],
             "group": "build",
             "presentation": {

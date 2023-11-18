@@ -25,3 +25,6 @@ docs/
 
 # data
 dest/*
+
+#vscode
+tasks.json
