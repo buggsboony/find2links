@@ -4,6 +4,7 @@ import std.array; //to use str.split("\n");
 import std.path; //2023-11-05 19:48:44 - baseName() extension()
 import std.file;
 import std.string;
+import core.stdc.stdlib; //2023-11-18 12:18:39 - exit(0);
 
 const APP_NAME = "Find2Links";
 
@@ -11,21 +12,14 @@ int[string] OCCURRENCES; //Memory
 
 int tryCreateLink(string filename,string destfilename)
 {
+    
     if( std.file.exists(destfilename) )
     {
-        writeln("File '"~destfilename~"' already exists.");
-        return -1;
-    }else
-    {
-        //Can Create
-        std.file.symlink(filename , destfilename);
-        if(std.file.exists(destfilename) )
-        {
             //try check if they are the same :                  
-            if(std.file.getSize(filename) != std.file.getSize(destfilename) )
-            {
-                writeln("'"~ destfilename ~ "' created OK.");  
-                return 0;
+            if(std.file.getSize(filename) == std.file.getSize(destfilename) )
+            {                
+                writeln("File '"~destfilename~"' already exists.");        
+                return -1;
             }else
             {
                 //Try another name
@@ -43,10 +37,18 @@ int tryCreateLink(string filename,string destfilename)
                 import std.conv;                
                 destfilename =  nameNoExt~"_"~to!string(OCCURRENCES[destfilename]) ~ ext;
                 writeln("New name = ", destfilename );
-                halt;
-                //tryCreateLink(filename, destfilename);
-                return 3;
+                //Try with a new name
+                return tryCreateLink(filename, destfilename);                
             }
+
+    }else
+    {
+        //Can Create
+        std.file.symlink(filename , destfilename);
+        if(std.file.exists(destfilename) ) //link creation success !?
+        {
+            writeln("'"~ destfilename ~ "' created OK.");  
+                return 0;
         }
     }
     return 5;
